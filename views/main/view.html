@@ -1,0 +1,58 @@
+{%extends 'layout.html'%}
+{%block content%}
+<div id="dialog" style="display: none; position: fixed;top:30%;left: 30%;height: 180px;width: 30%;background-color: white;z-index:2000">
+  <div style="background-color:#e45711;width: 100%;text-align: center;line-height: 40px;color: white;font-size: 1.7rem">回复</div>
+    <textarea id="replay_" autofocus class="form-control" style="width: 90%;border:none ;margin-top: 10px;margin-left: 10px" rows="3"></textarea>
+    <div style="margin-top: 10px">
+        <button id="button1" style="margin-left: 30%" class="btn btn-default" >取消</button>
+        <button id="button2" style="margin-left: 30px" class="btn btn-default">回复</button>
+    </div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h3 class="panel-title">
+                {{content.title}}
+            </h3>
+            <span style="display: inline-block;float: right;cursor: pointer;margin-left: 10px">点赞   <img id="img_1" src="../../public/img/dianzan.png" alt="" width="20px" style="vertical-align: sub"><span id="dianzanshu" praise-flag="0" data-id="{{content.id}}">{{content.likeNum}}</span></span>
+            <span style="display: inline-block;float: right;cursor: pointer">收藏   <img id="img_2" src="../../public/img/save.png" alt="" width="20px" style="vertical-align: sub"></span>
+
+            <p>作者：<span id="author">{{content.user.username}}</span>&nbsp;&nbsp;时间：<span id="data">{{content.addTime|date('Y年m月d日 H:i:s',-8*60)}}</span>-阅读：<span id="readNum">{{content.views}}</span>-评论：<span id="commond">{{content.commentNum}}</span></p>
+        </div>
+        <div class="panel-body">
+            <small>{{content.description}}</small>
+            <div>{{content.content}}</div>
+        </div>
+    </div>
+    <div class="comment-tetx">
+        <textarea id="comment"></textarea>
+        <input type="hidden" id="contentId" value="{{content.id}}"/>
+        <button id="messageBtn">评论</button>
+    </div>
+
+    {% if !content.comments %}
+    <p>还没有留言</p>
+    {% else %}
+    <div>
+
+        <ul id="commetUl">
+            {%for comment in content.comments%}
+                <li>
+                    <p class="com-titl"><span>{{comment.username}}</span> 时间：&nbsp;<em>{{comment.postTime}}</em> </p>
+                    <p class="com-con">
+                        <span><i class="i1">评论内容：&nbsp;</i><i class="i2">{{comment.content}}</i></span>
+                        {% if userInfo.isAdmin %}
+                            <input type="hidden" value = {{comment.id}} class="delInput"/>
+                            <a href="javascript:;" class="replay">回复</a>
+                            <a href="javascript:;" class="delet">删除</a>
+                        {%endif%}
+                        <div style="border-top: 1px solid #337ab7;padding-top: 20px">admin回复: {{comment.replay}}</div>
+
+                    </p>
+                </li>
+            {%endfor%}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{%endblock%}

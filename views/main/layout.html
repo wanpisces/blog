@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>我的博客系统</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/public/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/public/css/iconfont.css"/>
+</head>
+<body>
+<div id="saveBox"
+     style="display: none; position: fixed;top:30%;left: 30%;width: 30%;background-color: white;z-index:2000">
+
+    <div style="background-color:#e45711;width: 100%;text-align: center;line-height: 40px;color: white;font-size: 1.7rem">
+        我的收藏
+    </div>
+    <div id="content_"></div>
+    <button id="guanbi" style="margin: 20px 40% " class="btn btn-default">关闭</button>
+</div>
+<div id="likeBox"
+     style="display: none; position: fixed;top:30%;left: 30%;width: 30%;background-color: white;z-index:2000">
+
+    <div style="background-color:#e45711;width: 100%;text-align: center;line-height: 40px;color: white;font-size: 1.7rem">
+        我的点赞
+    </div>
+    <div id="content2_"></div>
+    <button id="guanbi2" style="margin: 20px 40% " class="btn btn-default">关闭</button>
+</div>
+<div id="commentBox"
+     style="display: none; position: fixed;top:30%;left: 30%;width: 30%;background-color: white;z-index:2000">
+
+    <div style="background-color:#e45711;width: 100%;text-align: center;line-height: 40px;color: white;font-size: 1.7rem">
+        我的评论
+    </div>
+    <div id="content3_"></div>
+    <button id="guanbi3" style="margin: 20px 40% " class="btn btn-default">关闭</button>
+</div>
+<div class="backCarousl">
+    <div class="slt-bg4" style="opacity: 1;"></div>
+    <div class="slt-bg3" style="opacity: 0;"></div>
+    <div class="slt-bg2" style="opacity: 0;"></div>
+    <!--<div class="slt-bg1"></div>-->
+</div>
+<div class="header">
+    <h1>我的博客系统</h1>
+    <small>The blog system was designed by yeqilin</small>
+</div>
+<div class="nav-header">
+    <ul class="cm-navlist clearfix">
+        <li><a href="/">首页</a></li>
+        {%for category in categories%}
+        <li><a href="/?category={{category.id}}"> {{category.name}}</a></li>
+        {%endfor%}
+        <li>
+            <div class="search-box">
+                <form class="search-form" action="/main/search" method="get">
+                    <input type="text" class="search-text"  id="searchText" name="keyWord" />
+                    <input type="submit" class="search-button" id="searchBtn"/>
+                    <i class="dw iconfont icon-sousuo-sousuo"></i>
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="main-container">
+    <div class="row">
+        <div class="col-sm-2 col-xs-2">
+        </div>
+        {%block content%}{%endblock%}
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+             style="width:300px;border:1px solid #ccc;border-radius:4px;padding:15px 15px 8px 15px;">
+            {% if userInfo._id %}
+            <form class="form-horizontal" role="form" id="userInfo">
+                <div><label>用户信息</label></div>
+                <div><span class="username">{{userInfo.username}}</span></div>
+                {%if userInfo.isAdmin%}
+                <div class="info">你好，管理员<a href="/admin">点击进入管理</a></div>
+                {%else%}
+                <div class="info">你好，欢迎光临我的博客</div>
+                {%endif%}
+                <div><a href="javascript:;" id="loginOut">退出</a></div>
+            </form>
+            <div id="save" style="margin-top: 20px;cursor: pointer;
+                        border: 1px solid lightslategray;
+                        padding: 3px;
+                        line-height: 30px;
+                        text-align: center;
+                        border-radius: 8px;">我的收藏
+            </div>
+            <div id="save2" style="margin-top: 20px;cursor: pointer;
+                        border: 1px solid lightslategray;
+                        padding: 3px;
+                        line-height: 30px;
+                        text-align: center;
+                        border-radius: 8px;">我的点赞
+            </div>
+            <div id="save3" style="margin-top: 20px;cursor: pointer;
+                        border: 1px solid lightslategray;
+                        padding: 3px;
+                        line-height: 30px;
+                        text-align: center;
+                        border-radius: 8px;">我的评论
+            </div>
+            {% else %}
+            <div class="loginBord" id="login-base">
+                <div class="loginTit clearfix">
+                    <div class="tosignup rt"><span style="margin-left:10px;color:#d54e4e;cursor:pointer;">注册</span>
+                    </div>
+                    <h1 class="lf" style="color:#333;">登录博客系统</h1>
+                </div>
+                <form>
+                    <div class="inpBox textbox_ui user">
+                        <div class="form-group">
+                            <label class="control-label" for="loginform-username"></label>
+                            <input type="text" id="loginform-username" class="form-control" name="username"
+                                   placeholder="请输入你的账号">
+
+                            <div class="custom invalid error_9o8Kl" style="display:none"></div>
+                        </div>
+                    </div>
+                    <div class="inpBox textbox_ui pass zxfpass">
+                        <div class="form-group">
+                            <label class="control-label" for="loginform-password"></label>
+                            <input type="password" id="loginform-password" class="form-control" name="password"
+                                   placeholder="请输入密码">
+
+                            <div class="custom invalid error_9o8Kl" style="display:none"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix zxfDl">
+                        <input class="loginbtn fl" type="button" name="login-button" value="登 录">
+                    </div>
+                    <p class="promote"></p>
+                </form>
+            </div>
+
+            <div class="loginBord" id="regist-base" style="display:none;">
+                <div class="loginTit clearfix">
+                    <div class="tosignup rt"><span style="margin-left:10px;color:#d54e4e;cursor:pointer;">登陆</span>
+                    </div>
+                    <h1 class="lf" style="color:#333;">注册博客系统</h1>
+                </div>
+                <form>
+                    <div class="inpBox textbox_ui user">
+                        <div class="form-group">
+                            <label class="control-label" for="loginform-username"></label>
+                            <input type="text" id="loginform-username" class="form-control" name="username"
+                                   placeholder="请输入你的账号">
+                        </div>
+                    </div>
+                    <div class="inpBox textbox_ui pass zxfpass">
+                        <div class="form-group">
+                            <label class="control-label" for="loginform-password"></label>
+                            <input type="password" id="loginform-password" class="form-control" name="password"
+                                   placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="inpBox textbox_ui pass zxfpass">
+                        <div class="form-group">
+                            <label class="control-label" for="loginform-password"></label>
+                            <input type="password" id="loginform-password" class="form-control" name="repassword"
+                                   placeholder="请再次输入密码">
+                        </div>
+                    </div>
+                    <div class="clearfix zxfDl">
+                        <input class="loginbtn fl" type="button" name="login-button" value="注册">
+                    </div>
+                    <p class="promote"></p>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {%block page%}{%endblock%}
+</div>
+
+</body>
+<script type="text/javascript" src="/public/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/public/js/MD5.js"></script>
+<script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/public/js/index.js"></script>
+</html>
